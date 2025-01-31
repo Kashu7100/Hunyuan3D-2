@@ -1,11 +1,3 @@
-[中文阅读](README_zh_cn.md)
-[日本語で読む](README_ja_jp.md)
-
-<p align="center"> 
-  <img src="./assets/images/teaser.jpg">
-
-</p>
-
 <div align="center">
   <a href=https://3d.hunyuan.tencent.com target="_blank"><img src=https://img.shields.io/badge/Official%20Site-333399.svg?logo=homepage height=22px></a>
   <a href=https://huggingface.co/spaces/tencent/Hunyuan3D-2  target="_blank"><img src=https://img.shields.io/badge/%F0%9F%A4%97%20Demo-276cb4.svg height=22px></a>
