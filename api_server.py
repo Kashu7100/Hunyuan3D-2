@@ -1,6 +1,9 @@
 """
 A model worker executes the model.
 """
+import json_numpy
+json_numpy.patch()
+import json
 import argparse
 import asyncio
 import base64
@@ -124,10 +127,6 @@ worker_id = str(uuid.uuid4())[:6]
 logger = build_logger("controller", f"{SAVE_DIR}/controller.log")
 
 
-def load_image_from_base64(image):
-    return Image.open(BytesIO(base64.b64decode(image)))
-
-
 class ModelWorker:
     def __init__(self, model_path='tencent/Hunyuan3D-2', device='cuda'):
         self.model_path = model_path
@@ -156,9 +155,13 @@ class ModelWorker:
 
     @torch.inference_mode()
     def generate(self, uid, params):
+        print(params)
+        if "encoded" in params:
+            print("encoded")
+            params = json.loads(params["encoded"])
         if 'image' in params:
             image = params["image"]
-            image = load_image_from_base64(image)
+            image = Image.fromarray(image).convert("RGB")
         else:
             if 'text' in params:
                 text = params["text"]

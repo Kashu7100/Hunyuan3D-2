@@ -15,19 +15,6 @@
 
 [//]: # (  <a href="#"><img alt="PyPI - Downloads" src="https://img.shields.io/pypi/v/mulankit?logo=pypi"  height=22px></a>)
 
-<br>
-
-## 🔥 News
-
-- Jan 27, 2025: 🛠️ Release Blender addon for Hunyuan3D 2.0, Check it out [here](#blender-addon).
-- Jan 23, 2025: 💬 We thank community members for creating [Windows installation tool](https://github.com/YanWenKun/Hunyuan3D-2-WinPortable), ComfyUI support with [ComfyUI-Hunyuan3DWrapper](https://github.com/kijai/ComfyUI-Hunyuan3DWrapper) and [ComfyUI-3D-Pack](https://github.com/MrForExample/ComfyUI-3D-Pack) and other awesome [extensions](#community-resources).
-- Jan 21, 2025: 💬 Enjoy exciting 3D generation on our website [Hunyuan3D Studio](https://3d.hunyuan.tencent.com)!
-- Jan 21, 2025: 🤗 Release inference code and pretrained models
-  of [Hunyuan3D 2.0](https://huggingface.co/tencent/Hunyuan3D-2).
-- Jan 21, 2025: 🤗 Release Hunyuan3D 2.0. Please give it a try
-  via [huggingface space](https://huggingface.co/spaces/tencent/Hunyuan3D-2) and
-  our [official site](https://3d.hunyuan.tencent.com)!
-
 
 <p align="center">
   <img src="assets/images/system.jpg">
@@ -80,44 +67,23 @@ Please visit [minimal_demo.py](minimal_demo.py) for more (**text to 3D** and **i
 python minimal_demo.py
 ```
 
-### Gradio App
-
-You could also host a [Gradio](https://www.gradio.app/) App in your own computer via:
-
-```bash
-python3 gradio_app.py
-```
-
 ### API Server
 
 You could launch an API server locally, which you could post web request for Image/Text to 3D, Texturing existing mesh, and e.t.c.
 
 ```bash
-python api_server.py --host 0.0.0.0 --port 8080
+python api_server.py --host 0.0.0.0 --port 8081
 ```
+
 A demo post request for image to 3D without texture.
 ```bash
-img_b64_str=$(base64 -i assets/demo.png)
-curl -X POST "http://localhost:8080/generate" \
-     -H "Content-Type: application/json" \
-     -d '{
-           "image": "'"$img_b64_str"'",
-         }' \
-     -o test2.glb
+python sample_request.py
 ```
 
 ### Official Site
 
 Don't forget to visit [Hunyuan3D](https://3d.hunyuan.tencent.com) for quick use, if you don't want to host yourself.
 
-
-## 📑 Open-Source Plan
-
-- [x] Inference Code
-- [x] Model Checkpoints
-- [x] Technical Report
-- [ ] ComfyUI
-- [ ] TensorRT Version
 
 ## 🔗 BibTeX
 
