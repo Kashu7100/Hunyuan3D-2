@@ -25,23 +25,6 @@
 
 <br>
 
-> From Hunyuan3D Team: Happy New Year!
-
-![happynewyear](https://github.com/user-attachments/assets/69aa40a7-8657-4c2b-8efd-99eda6c26fe4)
-
-
-> Join our **[Wechat](#)** and **[Discord](https://discord.gg/GuaWYwzKbX)** group to discuss and find help from us.
-
-| Wechat Group                                     | Xiaohongshu                                           | X                                           | Discord                                           |
-|--------------------------------------------------|-------------------------------------------------------|---------------------------------------------|---------------------------------------------------|
-| <img src="assets/qrcode/wechat.png"  height=140> | <img src="assets/qrcode/xiaohongshu.png"  height=140> | <img src="assets/qrcode/x.png"  height=140> | <img src="assets/qrcode/discord.png"  height=140> |        
-
----
-
-<p align="center">
-“ Living out everyone’s imagination on creating and manipulating 3D assets.”
-</p>
-
 ## 🔥 News
 
 - Jan 27, 2025: 🛠️ Release Blender addon for Hunyuan3D 2.0, Check it out [here](#blender-addon).
@@ -53,23 +36,6 @@
   via [huggingface space](https://huggingface.co/spaces/tencent/Hunyuan3D-2) and
   our [official site](https://3d.hunyuan.tencent.com)!
 
-## **Abstract**
-
-We present Hunyuan3D 2.0, an advanced large-scale 3D synthesis system for generating high-resolution textured 3D assets.
-This system includes two foundation components: a large-scale shape generation model - Hunyuan3D-DiT, and a large-scale
-texture synthesis model - Hunyuan3D-Paint.
-The shape generative model, built on a scalable flow-based diffusion transformer, aims to create geometry that properly
-aligns with a given condition image, laying a solid foundation for downstream applications.
-The texture synthesis model, benefiting from strong geometric and diffusion priors, produces high-resolution and vibrant
-texture maps for either generated or hand-crafted meshes.
-Furthermore, we build Hunyuan3D-Studio - a versatile, user-friendly production platform that simplifies the re-creation
-process of 3D assets. It allows both professional and amateur users to manipulate or even animate their meshes
-efficiently.
-We systematically evaluate our models, showing that Hunyuan3D 2.0 outperforms previous state-of-the-art models,
-including the open-source models and closed-source models in geometry details, condition alignment, texture quality, and
-e.t.c.
-
-
 
 <p align="center">
   <img src="assets/images/system.jpg">
@@ -77,33 +43,9 @@ e.t.c.
 
 ## ☯️ **Hunyuan3D 2.0**
 
-### Architecture
-
-Hunyuan3D 2.0 features a two-stage generation pipeline, starting with the creation of a bare mesh, followed by the
-synthesis of a texture map for that mesh. This strategy is effective for decoupling the difficulties of shape and
-texture generation and also provides flexibility for texturing either generated or handcrafted meshes.
-
-<p align="left">
-  <img src="assets/images/arch.jpg">
-</p>
-
-### Performance
-
-We have evaluated Hunyuan3D 2.0 with other open-source as well as close-source 3d-generation methods.
-The numerical results indicate that Hunyuan3D 2.0 surpasses all baselines in the quality of generated textured 3D assets
-and the condition following ability.
-
-| Model                   | CMMD(⬇)   | FID_CLIP(⬇) | FID(⬇)      | CLIP-score(⬆) |
-|-------------------------|-----------|-------------|-------------|---------------|
-| Top Open-source Model1  | 3.591     | 54.639      | 289.287     | 0.787         |
-| Top Close-source Model1 | 3.600     | 55.866      | 305.922     | 0.779         |
-| Top Close-source Model2 | 3.368     | 49.744      | 294.628     | 0.806         |
-| Top Close-source Model3 | 3.218     | 51.574      | 295.691     | 0.799         |
-| Hunyuan3D 2.0           | **3.193** | **49.165**  | **282.429** | **0.809**     |
 
 Generation results of Hunyuan3D 2.0:
 <p align="left">
-  <img src="assets/images/e2e-1.gif"  height=250>
   <img src="assets/images/e2e-2.gif"  height=250>
 </p>
 
@@ -119,61 +61,32 @@ It takes 11.5 GB VRAM for shape generation and 24.5 GB for shape and texture gen
 
 ## 🤗 Get Started with Hunyuan3D 2.0
 
-You may follow the next steps to use Hunyuan3D 2.0 via:
-
-- [Code](#code-usage)
-- [Gradio App](#gradio-app)
-- [API Server](#api-server)
-- [Blender Addon](#blender-addon)
-- [Official Site](#official-site)
-
 ### Install Requirements
 
 Please install Pytorch via the [official](https://pytorch.org/) site. Then install the other requirements via
 
 ```bash
+conda create -n hunyuan python=3.10
+conda activate hunyuan
+git clone https://github.com/Kashu7100/Hunyuan3D-2.git
+cd Hunyuan3D-2
 pip install -r requirements.txt
 # for texture
+# need to have cuda (move to compute node)
 cd hy3dgen/texgen/custom_rasterizer
 python3 setup.py install
 cd ../../..
 cd hy3dgen/texgen/differentiable_renderer
 python3 setup.py install
+cd ../../..
 ```
 
-### Code Usage
+### Usage
+Please visit [minimal_demo.py](minimal_demo.py) for more (**text to 3D** and **image to 3D**).
 
-We designed a diffusers-like API to use our shape generation model - Hunyuan3D-DiT and texture synthesis model -
-Hunyuan3D-Paint.
-
-You could assess **Hunyuan3D-DiT** via:
-
-```python
-from hy3dgen.shapegen import Hunyuan3DDiTFlowMatchingPipeline
-
-pipeline = Hunyuan3DDiTFlowMatchingPipeline.from_pretrained('tencent/Hunyuan3D-2')
-mesh = pipeline(image='assets/demo.png')[0]
+```bash
+python minimal_demo.py
 ```
-
-The output mesh is a [trimesh object](https://trimesh.org/trimesh.html), which you could save to glb/obj (or other
-format) file.
-
-For **Hunyuan3D-Paint**, do the following:
-
-```python
-from hy3dgen.texgen import Hunyuan3DPaintPipeline
-from hy3dgen.shapegen import Hunyuan3DDiTFlowMatchingPipeline
-
-# let's generate a mesh first
-pipeline = Hunyuan3DDiTFlowMatchingPipeline.from_pretrained('tencent/Hunyuan3D-2')
-mesh = pipeline(image='assets/demo.png')[0]
-
-pipeline = Hunyuan3DPaintPipeline.from_pretrained('tencent/Hunyuan3D-2')
-mesh = pipeline(mesh, image='assets/demo.png')
-```
-
-Please visit [minimal_demo.py](minimal_demo.py) for more advanced usage, such as **text to 3D** and **texture generation
-for handcrafted mesh**.
 
 ### Gradio App
 
@@ -200,16 +113,6 @@ curl -X POST "http://localhost:8080/generate" \
          }' \
      -o test2.glb
 ```
-
-### Blender Addon
-
-With an API server launched, you could also directly use Hunyuan3D 2.0 in your blender with our [Blender Addon](blender_addon.py). Please follow our tutorial to install and use.
-
-
-https://github.com/user-attachments/assets/8230bfb5-32b1-4e48-91f4-a977c54a4f3e
-
-
-
 
 ### Official Site
 
@@ -265,13 +168,3 @@ We would like to thank the contributors to
 the [DINOv2](https://github.com/facebookresearch/dinov2), [Stable Diffusion](https://github.com/Stability-AI/stablediffusion), [FLUX](https://github.com/black-forest-labs/flux), [diffusers](https://github.com/huggingface/diffusers), [HuggingFace](https://huggingface.co), [CraftsMan3D](https://github.com/wyysf-98/CraftsMan3D),
 and [Michelangelo](https://github.com/NeuralCarver/Michelangelo/tree/main) repositories, for their open research and
 exploration.
-
-## Star History
-
-<a href="https://star-history.com/#Tencent/Hunyuan3D-2&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Tencent/Hunyuan3D-2&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Tencent/Hunyuan3D-2&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Tencent/Hunyuan3D-2&type=Date" />
- </picture>
-</a>

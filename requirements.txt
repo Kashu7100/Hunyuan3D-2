@@ -13,7 +13,7 @@ torchvision
 #ipdb
 omegaconf
 
-#sentencepiece
+sentencepiece
 tqdm
 
 # Mesh Processing
@@ -38,3 +38,4 @@ rembg
 onnxruntime
 #gevent
 #geventhttpclient
+
